@@ -19,7 +19,7 @@
  (name ocaml_start)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml dune (odoc :with-doc) ppx_deriving)
+ (depends ocaml dune (odoc :with-doc) ppx_deriving (alcotest :with-test))
  (tags
   (topics "to describe" your project)))
 
