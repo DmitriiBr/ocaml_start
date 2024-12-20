@@ -42,3 +42,55 @@ let decode_list list =
     | Many (x, y) :: t -> aux (spread_tuple acc x y) t
   in
   List.rev (aux [] list)
+
+(*Run-Length Encoding of a List (Direct Solution)*)
+(*Solution*)
+let encode_d list =
+  let rle count x = if count = 0 then One x else Many (count + 1, x) in
+  let rec aux count acc = function
+    | [] -> acc
+    | [ x ] -> rle count x :: acc
+    | x :: (y :: _ as t) ->
+        if x = y then aux (count + 1) acc t else aux 0 (rle count x :: acc) t
+  in
+  List.rev (aux 0 [] list)
+
+(*Duplicate the Elements of a List *)
+(*Solution*)
+let list_to_d = [ "a"; "b"; "c"; "c"; "d" ]
+let rec duplicate = function [] -> [] | x :: t -> x :: x :: duplicate_2 t
+let rec duplicate_2 = function [] -> [] | x :: t -> duplicate_2 t @ [ x; x ]
+
+(* This is tail recursive variant*)
+let duplicate_tail_rec list =
+  let rec aux acc = function [] -> acc | x :: t -> aux (x :: x :: acc) t in
+  aux [] (List.rev list)
+
+(*Replicate the Elements of a List a Given Number of Times*)
+let list_to_r = [ "a"; "b"; "c" ]
+
+(*Basic solution*)
+let rec create_replicates times acc x =
+  if times = 0 then acc else create_replicates (times - 1) (x :: acc) x
+
+let replicate list times =
+  let rec aux acc i = function
+    | [] -> acc
+    | x :: t -> aux (create_replicates times acc x) (i - 1) t
+  in
+  aux [] times (List.rev list)
+
+(*Basic solution*)
+let fold_replicate list times =
+  List.fold_left (create_replicates times) [] (List.rev list)
+
+(* Drop Every N'th Element From a List *)
+(* Solution with tail recursion *)
+let list_to_drop = [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j" ]
+
+let drop list nth =
+  let rec aux acc i = function
+    | [] -> acc
+    | x :: t -> if i = nth then aux acc 1 t else aux (x :: acc) (i + 1) t
+  in
+  List.rev (aux [] 1 list)
