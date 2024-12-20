@@ -94,3 +94,19 @@ let drop list nth =
     | x :: t -> if i = nth then aux acc 1 t else aux (x :: acc) (i + 1) t
   in
   List.rev (aux [] 1 list)
+
+(* Split a List Into Two Parts; The Length of the First Part Is Given *)
+(* Solution *)
+let list_to_split = [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j" ]
+
+let split list len =
+  let rec aux acc i = function
+    | [] -> (List.rev acc, [])
+    | h :: t as l ->
+        if i = len then (List.rev acc, l) else aux (h :: acc) (i + 1) t
+  in
+  aux [] 0 list
+
+(* Extract a Slice From a List *)
+(* Solution *)
+let list_to_slice = [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j" ]
