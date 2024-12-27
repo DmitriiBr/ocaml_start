@@ -136,3 +136,29 @@ let rotate list places =
 (* Solution *)
 
 let list_to_remove_kth = [ "a"; "b"; "c"; "d" ]
+
+(* Solution with checking length of a list*)
+let remove_at_1 k list =
+  let len = List.length list in
+  if len = 0 then list
+  else
+    let i = if k > len - 1 then k mod len else k in
+    let rec aux acc i = function
+      | [] -> []
+      | h :: t -> if i = 0 then acc @ t else aux (h :: acc) (i - 1) t
+    in
+    aux [] i list
+
+(* Solution without checking and without tail recursion *)
+let rec remove_at k = function
+  | [] -> []
+  | h :: t -> if k = 0 then t else h :: remove_at (k - 1) t
+
+(* Insert an Element at a Given Position Into a List *)
+(* Solution *)
+
+let list_to_insert = [ "a"; "b"; "c"; "d" ]
+
+let rec insert_at str n = function
+  | [] -> [ str ]
+  | h :: t as l -> if n = 0 then str :: l else h :: insert_at str (n - 1) t
