@@ -110,3 +110,29 @@ let split list len =
 (* Extract a Slice From a List *)
 (* Solution *)
 let list_to_slice = [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j" ]
+
+let rec drop count point = function
+  | [] -> []
+  | x :: t -> if count = point then t else drop (count + 1) point t
+
+let slice list i k =
+  let first_part = List.rev (drop 1 i list) in
+  let second_part = drop 1 (List.length list - k - 1) first_part in
+  List.rev second_part
+
+(* Rotate a List N Places to the Left *)
+(* Solution *)
+let list_to_rotate = [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h" ]
+
+let rotate list places =
+  let rec aux acc n = function
+    | [] -> []
+    | x :: t as l ->
+        if n = places then l @ List.rev acc else aux (x :: acc) (n + 1) t
+  in
+  aux [] 0 list
+
+(* Remove the K'th Element From a List *)
+(* Solution *)
+
+let list_to_remove_kth = [ "a"; "b"; "c"; "d" ]
