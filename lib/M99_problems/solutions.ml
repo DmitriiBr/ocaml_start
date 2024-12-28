@@ -162,3 +162,32 @@ let list_to_insert = [ "a"; "b"; "c"; "d" ]
 let rec insert_at str n = function
   | [] -> [ str ]
   | h :: t as l -> if n = 0 then str :: l else h :: insert_at str (n - 1) t
+
+(* Create a List Containing All Integers Within a Given Range *)
+(* Solution *)
+let range first last =
+  let rec aux first last =
+    if first > last then [] else last :: aux first (last - 1)
+  in
+  if first > last then aux last first else List.rev (aux first last)
+
+(* Extract a Given Number of Randomly Selected Elements From a List *)
+(* Solution *)
+let list_to_rnd_select = [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h" ]
+
+let rand_select list times =
+  Random.init 0;
+  let rec extract acc index = function
+    | [] -> raise Not_found
+    | h :: t ->
+        if index = 0 then (h, acc @ t) else extract (h :: acc) (index - 1) t
+  in
+  let rand_extract len list = extract [] (Random.int len) list in
+  let rec aux acc n list len =
+    if n = 0 then acc
+    else
+      let picked, rest = rand_extract len list in
+      aux (picked :: acc) (n - 1) rest (len - 1)
+  in
+  let len = List.length list in
+  aux [] (min times len) list len
