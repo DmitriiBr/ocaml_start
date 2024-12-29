@@ -191,3 +191,44 @@ let rand_select list times =
   in
   let len = List.length list in
   aux [] (min times len) list len
+
+(* Lotto: Draw N Different Random Numbers From the Set 1..M *)
+(* Solution without other functions *)
+let lotto_select count num =
+  Random.init 0;
+  let rec aux acc count n =
+    if count = 0 then acc
+    else
+      let drawn = Random.int n in
+      aux (drawn :: acc) (count - 1) (n - 1)
+  in
+  aux [] count num
+
+(* Solution with random select *)
+let lotto_select_2 n m = rand_select (range 1 m) n
+
+(* Generate a Random Permutation of the Elements of a List *)
+(* Solution *)
+let list_to_permutate = [ "a"; "b"; "c"; "d"; "e"; "f" ]
+
+(* Solution 1, my solution, with splittin on 2 functions*)
+let pick_random_from list =
+  Random.init 0;
+  let rec draw acc n = function
+    | [] -> raise Not_found
+    | h :: t -> if n = 0 then (h, acc @ t) else draw (h :: acc) (n - 1) t
+  in
+  let len = List.length list in
+  draw [] (Random.int len) list
+
+let permutation list =
+  let rec aux acc n list =
+    if n = 0 then acc
+    else
+      let picked, rest = pick_random_from list in
+      aux (picked :: acc) (n - 1) rest
+  in
+  aux [] (List.length list) list
+
+(* Solution 2, while using already defined function*)
+let permutation_2 list = rand_select list (List.length list)
