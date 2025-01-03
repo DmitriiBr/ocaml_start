@@ -232,3 +232,21 @@ let permutation list =
 
 (* Solution 2, while using already defined function*)
 let permutation_2 list = rand_select list (List.length list)
+
+(* Generate the Combinations of K Distinct Objects Chosen From the N Elements of a List *)
+(* Solution *)
+let list_to_extract = [ "a"; "b"; "c"; "d" ]
+
+let rec extract k list =
+  if k <= 0 then [ [] ]
+  else
+    match list with
+    | [] -> []
+    | h :: t ->
+        let with_h = List.map (fun l -> h :: l) (extract (k - 1) t) in
+        let without_h = extract k t in
+        with_h @ without_h
+
+(* Group the Elements of a Set Into Disjoint Subsets *)
+(* Solution *)
+let list_to_group = [ "a"; "b"; "c"; "d" ]
